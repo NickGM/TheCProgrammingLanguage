@@ -195,18 +195,23 @@ void ungets(char s[])
 
 #define BUFSIZE 100
 
-char buf[BUFSIZE];
-int bufp=0;
+char buf=0;
 
 int getch(void)
 {
-    return (bufp>0)? buf[--bufp]:getchar();
+    int temp;
+    if(buf != 0)
+        temp = buf;
+    else
+        temp = getchar();
+    buf = 0;
+    return temp;
 }
 
 void ungetch(int c)
 {
-    if(bufp>=BUFSIZE)
-        printf("ungetch: too many characters\n");
+    if(buf != 0)
+        printf("buffer full");
     else
-        buf[bufp++]=c;
+        buf = c;
 }
